@@ -1,19 +1,38 @@
 #Bar plot on deaths per state
-byStates <- sort(table(data$state),  decreasing = TRUE)
+byState <- as.data.frame(sort(table(data$state),  decreasing = TRUE))
+colnames(byState) <- c("state", "deaths")
 
-barplot(byStates, horiz = FALSE, las=2, border=NA)
+ggplot(data = byState, aes(x = state, y = deaths)) + 
+  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-#Bar plot with top ten most deaths by state
-barplot(byStates[0:10], horiz = FALSE, las=2, border=NA)
+#Bar plot on top ten states by death
+ggplot(data = head(byState, 10), aes(x = state, y = deaths)) + 
+  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 #Bar plot with top ten most deaths by city
-byCity <- sort(table(data$city_or_county), decreasing = TRUE)
-
-barplot(byCity[0:100], horiz = FALSE, las=2, border=NA)
+byCity <- as.data.frame(sort(table(data$city_or_county), decreasing = TRUE))
+colnames(byCity) <- c("city", "deaths")
+ggplot(data = head(byCity, 60), aes(x = city, y = deaths)) + 
+  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 #Prices Law? 10% of places == 50% of deaths, looks plausable
-sum(byCity)
-sum(byCity[0:100])
+length(byCity$city)
+sum(byCity$deaths)
 
-#lineplot with dates of shootings
+#histogram with dates of shootings
+byDate <- as.data.frame(sort(table(data$date), decreasing = TRUE))
+colnames(byDate) <- c("date", "deaths")
 
+ggplot(data = byDate, aes(x = as.factor(date), y = deaths)) + 
+  geom_point() + labs(x = "date (2013 - 2018)") + theme(axis.text.x=element_blank())
+
+byRelationship <- as.data.frame(sort(table(data$participant_relationship), decreasing = TRUE))
+colnames(byRelationship) <- c("Relationship", "Instances")
+
+ggplot(data = byRelationship, aes(x = Relationship, y = Instances)) + 
+  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+sum(table(data$participant_relationship))
+
+test <- data$participant_gender[4]
+str_extract_all(test, "Male")
