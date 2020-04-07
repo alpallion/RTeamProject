@@ -1,6 +1,10 @@
 #Sources Code from Data File and runs them
-source("Data/ReadAndClean.R")
 library("ggplot2")
 library("stringr")
+library("dplyr")
 library("stringi")
+library("reshape2")
+library("maps")
+library("ggmaps")
+source("Data/ReadAndClean.R")
 source("Data/Graphs.R")
